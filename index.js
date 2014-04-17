@@ -8,6 +8,7 @@ app.use(require("morgan")("dev"));
 app.use(require("connect-assets")({
   paths: ["assets/stylesheets", "assets/javascripts"]
 }));
+app.use(require("body-parser")());
 
 require("./controllers/static")(app);
 require("./controllers/headers")(app);

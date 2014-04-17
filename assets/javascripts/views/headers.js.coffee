@@ -4,10 +4,13 @@ class App.Views.Headers extends Backbone.View
 
   initialize: () ->
     @request = new App.Models.Request()
+    @form = new App.Views.HeaderForm(el: @$(".js-header-form"))
 
     @listenTo(@request, "request", @show_loading_indicator)
     @listenTo(@request, "sync", @hide_loading_indicator)
     @listenTo(@request, "sync", @render)
+
+    @render()
 
   make_request: () ->
     @request.fetch()

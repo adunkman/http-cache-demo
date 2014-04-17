@@ -1,4 +1,5 @@
 var child = require("child_process");
+var response_headers = [];
 
 module.exports = function (app) {
   app.get("/request", make_request_through_proxy);
@@ -7,10 +8,33 @@ module.exports = function (app) {
 };
 
 var update_headers = function (req, res) {
-  res.send(200);
+  response_headers = parse_incoming_headers(req.body.headers);
+  res.send({ headers: response_headers });
+};
+
+var parse_incoming_headers = function (questionable_headers) {
+  var valid_headers = [];
+
+  for (var i = 0, length = questionable_headers.length; i < length; i++) {
+    var header = questionable_headers[i];
+    var parts = header.split(":");
+
+    if (parts.length >= 2 && parts[0].trim().length && parts[1].trim().length) {
+      valid_headers.push(header)
+    }
+  };
+
+  return valid_headers;
 };
 
 var respond_to_proxy_request = function (req, res) {
+  for (var i = 0, length = response_headers.length; i < length; i++) {
+    var parts = response_headers[i].split(":");
+    var name = parts.shift();
+    var value = parts.join(":");
+
+    res.setHeader(name, value);
+  }
   res.send("An otherwise empty response.");
 };
 

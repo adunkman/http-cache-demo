@@ -24,4 +24,8 @@ html(lang="en-US")
     div
       h1 Response Headers
 
+      form(action="/request", method="post", class="js-header-form")
+        textarea(name="headers")
+        button(type="submit") Update Server Response Headers
+
     button(type="button", class="js-make-request") Make Request
