@@ -67,16 +67,39 @@ var make_squidclient_request_to = function (url, should_force_reload, callback) 
 var parse_proxy_response = function (response, callback) {
   var err;
   var responses;
+  var headers_added_by_proxy = [ "Via", "X-Cache" ];
 
   try {
+    var status_line = response.split("\r\n")[0];
+    var status = status_line.replace(/^[^\s]+\s+/, "");
+    var response_lines = response.replace(status_line + "\r\n", "").split("\r\n");
+
     responses = {
-      status: response.split("\n")[0],
       server: null,
-      cache: response
+      cache: {
+        status: status,
+        headers: response_lines.slice(0, response_lines.length-2)
+      }
     };
 
     if (response.indexOf("X-Cache: MISS") !== -1) {
-      responses.server = response.replace(/(X-Cache: .+\r\n|Via: .+\r\n)/g, "");
+      responses.server = {
+        status: status,
+        headers: []
+      }
+
+      header_loop:
+      for (var i = 0, length = responses.cache.headers.length; i < length; i++) {
+        var header = responses.cache.headers[i];
+
+        for (var j = 0, len = headers_added_by_proxy.length; j < len; j++) {
+          if (header.indexOf(headers_added_by_proxy[j]) !== -1) {
+            continue header_loop;
+          }
+        }
+
+        responses.server.headers.push(header);
+      }
     }
   }
   catch (e) {

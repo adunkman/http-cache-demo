@@ -19,9 +19,11 @@ class App.Views.Request extends Backbone.View
     @request.force_reload = $(evt.target).is(":checked")
 
   render: () ->
-    @$(".js-status").text(@request.get("status"))
-    @$(".js-server").text(@request.get("server"))
-    @$(".js-cache").text(@request.get("cache"))
+    header_list = JST["templates/header_list"]
+
+    @$(".js-server").html(header_list(@request.get("server")))
+    @$(".js-cache").html(header_list(@request.get("cache")))
+    @$(".js-client").html(header_list(@request.get("client")))
 
   show_loading_indicator: () ->
     console.log("loading");

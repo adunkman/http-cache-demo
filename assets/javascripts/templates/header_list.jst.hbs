@@ -1,0 +1,13 @@
+{{#if status}}
+  <h1>{{status}}</h1>
+  <table>
+    {{#each headers}}
+      <tr class="{{key}}">
+        <th>{{key}}:</th>
+        <td>{{value}}</td>
+      </tr>
+    {{/each}}
+  </table>
+{{else}}
+  <p>No request was made.</p>
+{{/if}}

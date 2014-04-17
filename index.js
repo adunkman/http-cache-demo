@@ -6,7 +6,7 @@ app.disable("x-powered-by");
 
 app.use(require("morgan")("dev"));
 app.use(require("connect-assets")({
-  paths: ["assets/stylesheets", "assets/javascripts"]
+  paths: ["assets/stylesheets", "assets/javascripts", "node_modules"]
 }));
 app.use(require("body-parser")());
 
