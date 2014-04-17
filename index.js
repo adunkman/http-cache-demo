@@ -1,6 +1,8 @@
 var express = require("express");
 var app = express();
 
+app.disable("x-powered-by");
+
 app.use(require("morgan")("dev"));
 
 require("./controllers/static")(app);
