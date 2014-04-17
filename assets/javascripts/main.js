@@ -10,5 +10,6 @@
 var App = { Models: {}, Views: {} };
 
 $(document).ready(function () {
-  new App.Views.Headers({ el: document });
+  new App.Views.Request({ el: document });
+  new App.Views.Response({ el: $(".js-header-form") });
 });

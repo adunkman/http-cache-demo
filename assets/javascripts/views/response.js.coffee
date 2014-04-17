@@ -1,4 +1,4 @@
-class App.Views.HeaderForm extends Backbone.View
+class App.Views.Response extends Backbone.View
   events:
     "submit": "save_headers"
 
