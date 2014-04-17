@@ -16,9 +16,11 @@ var respond_to_proxy_request = function (req, res) {
 
 var make_request_through_proxy = function (req, res) {
   var url = expand_to_full_url(req.connection.server, "/request/internal");
-  var proxy_request = make_squidclient_request_to(url);
 
-  proxy_request.pipe(res);
+  make_squidclient_request_to(url, function (err, responses) {
+    if (err) res.send(500, err);
+    else res.send(responses)
+  });
 };
 
 var expand_to_full_url = function (server, path) {
@@ -26,6 +28,31 @@ var expand_to_full_url = function (server, path) {
   return "http://" + info.address + ":" + info.port + path;
 };
 
-var make_squidclient_request_to = function (url) {
-  return child.spawn("squidclient", [ url ]).stdout;
+var make_squidclient_request_to = function (url, callback) {
+  child.exec("squidclient " + url, function (err, stdout) {
+    if (err) callback(err);
+    else parse_proxy_response(stdout.toString(), callback);
+  });
+};
+
+var parse_proxy_response = function (response, callback) {
+  var err;
+  var responses;
+
+  try {
+    responses = {
+      status: response.split("\n")[0],
+      server: null,
+      cache: response
+    };
+
+    if (response.indexOf("X-Cache: MISS") !== -1) {
+      responses.server = response.replace(/(X-Cache: .+\r\n|Via: .+\r\n)/g, "");
+    }
+  }
+  catch (e) {
+    err = e;
+  }
+
+  callback(err, responses);
 };

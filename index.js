@@ -1,9 +1,13 @@
 var express = require("express");
 var app = express();
 
+app.set("view engine", "jade");
 app.disable("x-powered-by");
 
 app.use(require("morgan")("dev"));
+app.use(require("connect-assets")({
+  paths: ["assets/stylesheets", "assets/javascripts"]
+}));
 
 require("./controllers/static")(app);
 require("./controllers/headers")(app);

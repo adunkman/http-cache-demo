@@ -1,0 +1,27 @@
+doctype html
+html(lang="en-US")
+  head
+    meta(charset="UTF-8")
+
+    title Headers
+
+    != js("main.js")
+  body
+    div
+      h1(class="js-status")
+
+      div
+        h1 Server
+        pre(class="js-server")
+
+      div
+        h1 Cache
+        pre(class="js-cache")
+
+      div
+        h1 Client
+
+    div
+      h1 Response Headers
+
+    button(type="button", class="js-make-request") Make Request

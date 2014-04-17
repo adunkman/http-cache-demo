@@ -3,5 +3,5 @@ module.exports = function (app) {
 };
 
 var render_header_forms = function (req, res) {
-  res.send(200);
+  res.render("header_form");
 };
