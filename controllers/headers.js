@@ -40,8 +40,9 @@ var respond_to_proxy_request = function (req, res) {
 
 var make_request_through_proxy = function (req, res) {
   var url = expand_to_full_url(req.connection.server, "/request/internal");
+  var should_force_reload = req.query.force_reload === "true";
 
-  make_squidclient_request_to(url, function (err, responses) {
+  make_squidclient_request_to(url, should_force_reload, function (err, responses) {
     if (err) res.send(500, err);
     else res.send(responses)
   });
@@ -52,8 +53,12 @@ var expand_to_full_url = function (server, path) {
   return "http://" + info.address + ":" + info.port + path;
 };
 
-var make_squidclient_request_to = function (url, callback) {
-  child.exec("squidclient " + url, function (err, stdout) {
+var make_squidclient_request_to = function (url, should_force_reload, callback) {
+  var command = ["squidclient"];
+  if (should_force_reload) command.push("-r");
+  command.push(url);
+
+  child.exec(command.join(" "), function (err, stdout) {
     if (err) callback(err);
     else parse_proxy_response(stdout.toString(), callback);
   });

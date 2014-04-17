@@ -1,6 +1,7 @@
 class App.Views.Headers extends Backbone.View
   events:
     "click .js-make-request": "make_request"
+    "change .js-force-reload": "set_request_forcefulness"
 
   initialize: () ->
     @request = new App.Models.Request()
@@ -14,6 +15,9 @@ class App.Views.Headers extends Backbone.View
 
   make_request: () ->
     @request.fetch()
+
+  set_request_forcefulness: (evt) ->
+    @request.force_reload = $(evt.target).is(":checked")
 
   render: () ->
     @$(".js-status").text(@request.get("status"))
