@@ -43,7 +43,7 @@ var make_request_through_proxy = function (req, res) {
   var should_force_reload = req.query.force_reload === "true";
 
   make_squidclient_request_to(url, should_force_reload, function (err, responses) {
-    if (err) res.send(500, err);
+    if (err) res.send(500, seralize_error(err, "Could not execute squidclient successfully."));
     else res.send(responses)
   });
 };
@@ -107,4 +107,12 @@ var parse_proxy_response = function (response, callback) {
   }
 
   callback(err, responses);
+};
+
+var seralize_error = function (err, details) {
+  var seralized = JSON.parse(JSON.stringify(err));
+  seralized.message = err.message.trim();
+  seralized.details = details;
+
+  return seralized;
 };
