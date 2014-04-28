@@ -28,6 +28,8 @@ var parse_incoming_headers = function (questionable_headers) {
 };
 
 var respond_to_proxy_request = function (req, res) {
+  req.app.get("io").sockets.emit("server_response", true);
+
   for (var i = 0, length = response_headers.length; i < length; i++) {
     var parts = response_headers[i].split(":");
     var name = parts.shift();
