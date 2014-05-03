@@ -3,8 +3,7 @@ class App.Router extends Backbone.Router
     "": "show_pipeline"
 
   initialize: ()  ->
-    @endpoint = new App.Models.Endpoint()
+    @request = new App.Models.Request()
 
   show_pipeline: () ->
-    @request_view or= new App.Views.Request(model: @endpoint, el: $("body"))
-    @response_view or= new App.Views.Response(model: @endpoint, el: $(".response"))
+    @request_view or= new App.Views.Request(model: @request, el: $("body"))

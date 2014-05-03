@@ -4,7 +4,8 @@ class App.Views.Request extends Backbone.View
 
   initialize: () ->
     @listenTo(@model, "request", @render)
-    @listenTo(@model, "sync", _.debounce(@render, 500))
+    @listenTo(@model, "sync", @render_response)
+    @listenTo(@model, "sync", _.debounce(@animate_request, 500))
 
     $("body").on("keyup keydown", @force_reload_on_alt_key)
 
@@ -14,7 +15,14 @@ class App.Views.Request extends Backbone.View
 
     @model.fetch(data: $.param(params))
 
-  render: () =>
+  render: () ->
+    @render_response()
+    @animate_request()
+
+  render_response: () ->
+    @$(".response").html(JST["templates/response"](@model.toJSON()))
+
+  animate_request: () =>
     @$el.toggleClass("is-loading", !@model.get("status"))
     @$el.toggleClass("has-response", !!@model.get("status"))
     @$el.attr("data-responded",
