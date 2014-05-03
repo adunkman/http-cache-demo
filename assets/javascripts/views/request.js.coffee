@@ -5,8 +5,8 @@ class App.Views.Request extends Backbone.View
     "keydown": "force_reload_on_alt_key"
 
   initialize: () ->
-    @listenTo(@model, "request", @render)
-    @listenTo(@model, "sync", @render_response)
+    @listenTo(@model, "request", @animate_request)
+    @listenTo(@model, "sync", _.debounce(@render_response, 400))
     @listenTo(@model, "sync", _.debounce(@animate_request, 500))
 
   request: () ->
@@ -14,10 +14,6 @@ class App.Views.Request extends Backbone.View
     params.force_reload = true if @$(".request").hasClass("will-force-reload")
 
     @model.fetch(data: $.param(params))
-
-  render: () ->
-    @render_response()
-    @animate_request()
 
   render_response: () ->
     @$(".response").html(JST["templates/response"](@model.toJSON()))
