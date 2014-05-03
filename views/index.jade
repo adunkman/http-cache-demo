@@ -8,6 +8,8 @@ html(lang="en-US")
     != css("main.css")
     != js("main.js")
   body
+    .error-messages: p.messages
+
     .request
       .container: button(type="button"): span Request
       .flag Will Invalidate Browser <span class="skip-cache">&amp; Proxy</span> Cache<span class="skip-cache">s</span>
