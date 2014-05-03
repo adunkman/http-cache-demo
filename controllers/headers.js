@@ -49,9 +49,18 @@ var make_request_through_proxy = function (req, res) {
   var url = expand_to_full_url(req.connection.server, "/request/internal");
   var should_force_reload = req.query.force_reload === "true";
 
-  make_squidclient_request_to(url, should_force_reload, function (err, responses) {
+  make_squidclient_request_to(url, should_force_reload, function (err, response) {
     if (err) res.send(500, seralize_error(err, "Could not execute squidclient successfully."));
-    else res.send(responses)
+    else {
+      for (var i = 0, length = response.headers.length; i < length; i++) {
+        var parts = response.headers[i].split(":");
+        var name = parts.shift();
+        var value = parts.join(":");
+
+        res.setHeader(name, value);
+      }
+      res.send(response.status, response.body);
+    }
   });
 };
 
@@ -73,47 +82,23 @@ var make_squidclient_request_to = function (url, should_force_reload, callback) 
 
 var parse_proxy_response = function (response, callback) {
   var err;
-  var responses;
-  var headers_added_by_proxy = [ "Via", "X-Cache" ];
 
   try {
     var status_line = response.split("\r\n")[0];
-    var status = status_line.replace(/^[^\s]+\s+/, "");
+    var status = parseInt(status_line.match(/\d{3}/)[0], 10);
     var response_lines = response.replace(status_line + "\r\n", "").split("\r\n");
 
-    responses = {
-      server: null,
-      cache: {
-        status: status,
-        headers: response_lines.slice(0, response_lines.length-2)
-      }
+    response = {
+      status: status,
+      headers: response_lines.slice(0, response_lines.length-2),
+      body: response_lines.slice(-1).join("\r\n")
     };
-
-    if (response.indexOf("X-Cache: MISS") !== -1) {
-      responses.server = {
-        status: status,
-        headers: []
-      }
-
-      header_loop:
-      for (var i = 0, length = responses.cache.headers.length; i < length; i++) {
-        var header = responses.cache.headers[i];
-
-        for (var j = 0, len = headers_added_by_proxy.length; j < len; j++) {
-          if (header.indexOf(headers_added_by_proxy[j]) !== -1) {
-            continue header_loop;
-          }
-        }
-
-        responses.server.headers.push(header);
-      }
-    }
   }
   catch (e) {
     err = e;
   }
 
-  callback(err, responses);
+  callback(err, response);
 };
 
 var seralize_error = function (err, details) {

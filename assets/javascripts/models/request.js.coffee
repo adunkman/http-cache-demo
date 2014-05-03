@@ -8,8 +8,9 @@ class App.Models.Request extends Backbone.Model
   response_detected: (from) -> () =>
     @set(from, true)
 
-  fetch: () ->
+  fetch: (options = {}) ->
     @clear()
+    options.dataType = "text"
     super
 
   parse: (response, options) ->
