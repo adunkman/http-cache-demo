@@ -47,7 +47,7 @@ var respond_to_proxy_request = function (req, res) {
 
 var make_request_through_proxy = function (req, res) {
   var url = expand_to_full_url(req.connection.server, "/request/internal");
-  var should_force_reload = req.query.force_reload === "true";
+  var should_force_reload = req.headers["force-reload"] === "true";
 
   make_squidclient_request_to(url, should_force_reload, function (err, response) {
     if (err) res.send(500, seralize_error(err, "Could not execute squidclient successfully."));

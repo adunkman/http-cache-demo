@@ -10,10 +10,12 @@ class App.Views.Request extends Backbone.View
     @listenTo(@model, "sync", _.debounce(@animate_request, 500))
 
   request: () ->
-    params = {}
-    params.force_reload = true if @$(".request").hasClass("will-force-reload")
+    headers = {}
 
-    @model.fetch(data: $.param(params))
+    headers["Cache-Control"] = "private, max-age=0" if @$(".request").hasClass("will-force-reload")
+    headers["Force-Reload"] = true if @$(".request").hasClass("will-force-proxy-reload")
+
+    @model.fetch({headers})
 
   render_response: () ->
     @$(".response").html(JST["templates/response"](@model.toJSON()))
