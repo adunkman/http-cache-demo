@@ -4,11 +4,16 @@ var response_headers = [];
 module.exports = function (app) {
   app.get("/request", make_request_through_proxy);
   app.get("/request/internal", respond_to_proxy_request);
-  app.post("/request", update_headers);
+  app.get("/headers", send_headers);
+  app.post("/headers", update_headers);
 };
 
 var update_headers = function (req, res) {
   response_headers = parse_incoming_headers(req.body.headers);
+  send_headers(req, res);
+};
+
+var send_headers = function (req, res) {
   res.send({ headers: response_headers });
 };
 

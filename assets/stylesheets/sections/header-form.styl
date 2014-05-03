@@ -1,0 +1,71 @@
+.header-form-is-visible
+  .request, .pipeline, .response
+    filter: blur(1px)
+
+.header-form
+  background: radial-gradient(50% 40%, 50% 80%, rgba(0, 0, 0, 0.1),rgba(0, 0, 0, 0.3))
+  height: 100%
+  left: 0
+  opacity: 0
+  pointer-events: none
+  position: fixed
+  top: 0
+  width: 100%
+
+  .modal
+    margin: 0 40px
+    position: relative
+    top: 50%
+    transform: translateY(-50%)
+
+  .elements
+    background: #fff
+    border-radius: 5px
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2),0 0 0 1px rgba(0,0,0,0.1)
+    margin: 0 auto
+    max-width: 100%
+    width: 500px
+    transform: translateY(-10px)
+
+  textarea
+    border-radius: 5px 5px 0 0
+    border: 0
+    display: block
+    font: inherit
+    height: 200px
+    margin: 0
+    padding: 10px
+    resize: none
+    width: 100%
+
+    &:focus
+      outline: none
+
+  button
+    appearance: none
+    background: linear-gradient(top, #fafafa, #f5f5f5)
+    border-radius: 0 0 5px 5px
+    border: solid #ddd
+    border-width: 1px 0 0 0
+    cursor: pointer
+    display: block
+    font: inherit
+    margin: 0
+    padding: 10px
+    width: 100%
+
+    &:focus
+      outline: none
+
+    &:active
+      background: linear-gradient(bottom, #fafafa, #f5f5f5)
+      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1)
+
+  .header-form-is-visible &
+    opacity: 1
+    pointer-events: all
+    transition: opacity 0.5s
+
+    .elements
+      transform: translateY(0)
+      transition: transform 0.5s ease-out

@@ -19,9 +19,9 @@ html(lang="en-US")
     .response
       // see client-side template for header table
 
-    form(action="/request", method="post", class="js-header-form")
-      textarea(name="headers")
-      button(type="submit") Update Server Response Headers
+    .header-form: .modal: .elements
+      textarea(name="headers", placeholder="Response headers")
+      button(type="button") Update Response Headers
 
 
 

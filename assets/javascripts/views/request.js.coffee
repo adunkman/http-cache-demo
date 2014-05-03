@@ -1,13 +1,13 @@
 class App.Views.Request extends Backbone.View
   events:
     "click .request button": "request"
+    "keyup": "force_reload_on_alt_key"
+    "keydown": "force_reload_on_alt_key"
 
   initialize: () ->
     @listenTo(@model, "request", @render)
     @listenTo(@model, "sync", @render_response)
     @listenTo(@model, "sync", _.debounce(@animate_request, 500))
-
-    $("body").on("keyup keydown", @force_reload_on_alt_key)
 
   request: () ->
     params = {}
