@@ -18,6 +18,9 @@
     "body-parser": "~1.0.2",
     "handlebars": "~2.0.0-alpha.2",
     "tail": "~0.3.5",
-    "socket.io": "~0.9.16"
+    "socket.io": "~0.9.16",
+    "stylus": "~0.44.0",
+    "ejs": "~1.0.0",
+    "nib": "~1.0.2"
   }
 }

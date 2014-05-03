@@ -1,0 +1,122 @@
+.pipeline
+  clearfix()
+  border: solid #ddd
+  border-width: 1px 0
+  margin: 40px 0
+  padding: 40px 0
+  position: relative
+  text-align: center
+
+  .container
+    float: left
+    position: relative
+    width: 33.33%
+
+  .client, .cache, .server
+    flowchart-element()
+    height: 85px
+
+    span
+      display: block
+      margin: 0
+      position: relative
+      top: 50%
+      transform: translateY(-50%)
+
+  &:before
+    background-color: #72c152
+    content: ""
+    cursor: default
+    display: block
+    height: 0
+    left: 16.665%
+    margin-left: -2px
+    position: absolute
+    top: -30px
+    width: 4px
+    z-index: 1
+
+    .has-response &
+      height: 60px
+      transition: height 0.2s linear
+
+  [data-responded="client"] &
+    .client
+      animation: highlight 0.2s ease 0.2s forwards
+
+  [data-responded="cache"] &
+    .container:nth-child(1)
+      &:before, &:after
+        background-color: #72c152
+        content: ""
+        cursor: default
+        display: block
+        height: 4px
+        position: absolute
+        top: 50%
+        width: 0
+        z-index: 1
+
+      &:before
+        animation: drawline 0.2s linear 0.3s forwards
+        left: 50%
+        margin-left: 90px
+        margin-top: -12px
+
+      &:after
+        animation: drawline 0.2s linear 0.7s forwards
+        margin-right: calc(-50% + 90px)
+        margin-top: 12px
+        right: 0
+
+    .cache
+      animation: highlight 0.2s ease 0.5s forwards
+
+  [data-responded="server"] &
+    .container:nth-child(1),
+    .container:nth-child(2)
+      &:before, &:after
+        background-color: #72c152
+        content: ""
+        cursor: default
+        display: block
+        height: 4px
+        position: absolute
+        top: 50%
+        width: 0
+        z-index: 1
+
+      &:before
+        left: 50%
+        margin-left: 90px
+        margin-top: -12px
+
+      &:after
+        margin-right: calc(-50% + 90px)
+        margin-top: 12px
+        right: 0
+
+    .container:nth-child(1):before
+      animation: drawline 0.2s linear 0.3s forwards
+
+    .container:nth-child(2):before
+      animation: drawline 0.2s linear 0.6s forwards
+
+    .server
+      animation: highlight 0.2s ease 0.8s forwards
+
+    .container:nth-child(2):after
+      animation: drawline 0.2s linear 1s forwards
+
+    .container:nth-child(1):after
+      animation: drawline 0.2s linear 1.3s forwards
+
+@keyframes drawline
+  100%
+    width: calc(100% - 180px)
+
+@keyframes highlight
+  100%
+    border-color: #72c152
+    box-shadow: 0 0 10px #72c152
+    font-weight: bold

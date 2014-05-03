@@ -1,7 +1,7 @@
 module.exports = function (app) {
-  app.get("/", render_header_forms);
+  app.get("/", render_index);
 };
 
-var render_header_forms = function (req, res) {
-  res.render("header_form");
+var render_index = function (req, res) {
+  res.render("index");
 };

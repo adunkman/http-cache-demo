@@ -1,0 +1,62 @@
+.response
+  margin-left: 16.665%
+  position: relative
+
+  &:before
+    background-color: #72c152
+    content: ""
+    cursor: default
+    display: block
+    height: 0
+    left: 0
+    margin-left: -2px
+    position: absolute
+    top: -70px
+    width: 4px
+    z-index: 1
+
+    [data-responded="client"] &
+      height: 60px
+      transition: height 0.2s linear 0.3s
+
+    [data-responded="cache"] &
+      height: 60px
+      transition: height 0.2s linear 1s
+
+    [data-responded="server"] &
+      height: 60px
+      transition: height 0.2s linear 1.6s
+
+  .headers
+    margin-left: -80px
+    opacity: 0
+    transform: translateY(-10px)
+
+    [data-responded="client"] &
+      opacity: 1
+      transform: translateY(0)
+      transition: opacity 0.5s linear 0.7s, transform 0.5s ease-out 0.7s
+
+    [data-responded="cache"] &
+      opacity: 1
+      transform: translateY(0)
+      transition: opacity 0.5s linear 1.2s, transform 0.5s ease-out 1.2s
+
+    [data-responded="server"] &
+      opacity: 1
+      transform: translateY(0)
+      transition: opacity 0.5s linear 1.8s, transform 0.5s ease-out 1.8s
+
+  h1
+    text-align: center
+    white-space: nowrap
+    width: 160px
+
+  th
+    text-align: right
+
+    &:after
+      content: ":"
+
+  td
+    padding-left: 10px

@@ -1,28 +1,28 @@
 class App.Views.Request extends Backbone.View
   events:
-    "click .js-make-request": "make_request"
-    "change .js-force-reload": "set_request_forcefulness"
+    "click .request button": "request"
 
   initialize: () ->
-    @listenTo(@model, "request", @show_loading_indicator)
-    @listenTo(@model, "sync", @hide_loading_indicator)
-    @listenTo(@model, "sync", @render)
+    @listenTo(@model, "request", @render)
+    @listenTo(@model, "sync", _.debounce(@render, 500))
 
-    @render()
+    $("body").on("keyup keydown", @force_reload_on_alt_key)
 
-  make_request: () ->
-    @model.fetch()
+  request: () ->
+    params = {}
+    params.force_reload = true if @$(".request").hasClass("will-force-reload")
 
-  set_request_forcefulness: (evt) ->
-    @model.force_reload = $(evt.target).is(":checked")
+    @model.fetch(data: $.param(params))
 
-  render: () ->
-    header_list = JST["templates/header_list"]
+  render: () =>
+    @$el.toggleClass("is-loading", !@model.get("status"))
+    @$el.toggleClass("has-response", !!@model.get("status"))
+    @$el.attr("data-responded",
+      if !@model.get("status") then ""
+      else if @model.get("server_response") then "server"
+      else if @model.get("cache_response") then "cache"
+      else "client"
+    )
 
-    @$(".js-client").html(header_list(@model.get("client")))
-
-  show_loading_indicator: () ->
-    console.log("loading");
-
-  hide_loading_indicator: () ->
-    console.log("completed");
+  force_reload_on_alt_key: (evt) =>
+    @$(".request").toggleClass("will-force-reload", evt.altKey)

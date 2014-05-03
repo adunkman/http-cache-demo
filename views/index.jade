@@ -1,0 +1,27 @@
+doctype html
+html(lang="en-US")
+  head
+    meta(charset="UTF-8")
+
+    title Headers
+
+    != css("main.css")
+    != js("main.js")
+  body
+    .request
+      .container: button(type="button"): span Request
+
+    .pipeline
+      .container: .client: span Browser Cache
+      .container: .cache: span Proxy Cache
+      .container: .server: span Server
+
+    .response
+      // see client-side template for header table
+
+    form(action="/request", method="post", class="js-header-form")
+      textarea(name="headers")
+      button(type="submit") Update Server Response Headers
+
+
+
