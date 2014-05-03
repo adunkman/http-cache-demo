@@ -29,4 +29,5 @@ class App.Views.Request extends Backbone.View
     )
 
   force_reload_on_alt_key: (evt) =>
-    @$(".request").toggleClass("will-force-reload", evt.altKey)
+    will_force = evt.altKey and evt.target.tagName not in ["TEXTAREA", "INPUT"]
+    @$(".request").toggleClass("will-force-reload", will_force)
