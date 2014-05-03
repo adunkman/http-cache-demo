@@ -13,11 +13,15 @@ class App.Views.Headers extends Backbone.View
     @$(".header-form textarea").focus()
 
   close_on_escape: (evt) =>
-    @$el.removeClass("header-form-is-visible") if evt.keyCode is 27
+    @close() if evt.keyCode is 27
+
+  close: () ->
+    @$el.removeClass("header-form-is-visible")
+    @$(".request button").focus()
 
   save_headers: () ->
-    @$el.removeClass("header-form-is-visible")
     @model.save(headers: @$(".header-form textarea").val().split("\n"))
+    @close()
 
   render: () ->
     @$(".header-form textarea").val(@model.get("headers")?.join("\n"))
