@@ -42,6 +42,7 @@ var respond_to_proxy_request = function (req, res) {
 
     res.setHeader(name, value);
   }
+
   res.send("An otherwise empty response.");
 };
 
