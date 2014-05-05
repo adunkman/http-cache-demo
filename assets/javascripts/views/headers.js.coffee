@@ -17,7 +17,7 @@ class App.Views.Headers extends Backbone.View
 
   close: () ->
     @$el.removeClass("header-form-is-visible")
-    @$(".request button").focus()
+    @$(".initiate-request button").focus()
 
   save_headers: () ->
     @model.save(headers: @$(".header-form textarea").val().split("\n"))

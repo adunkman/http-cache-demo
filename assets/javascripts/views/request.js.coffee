@@ -1,6 +1,6 @@
 class App.Views.Request extends Backbone.View
   events:
-    "click .request button": "request"
+    "click .initiate-request button": "request"
     "keyup": "force_reload_on_alt_key"
     "keydown": "force_reload_on_alt_key"
 
@@ -12,13 +12,13 @@ class App.Views.Request extends Backbone.View
   request: () ->
     headers = {}
 
-    headers["Cache-Control"] = "private, max-age=0" if @$(".request").hasClass("will-force-reload")
-    headers["Force-Reload"] = true if @$(".request").hasClass("will-force-proxy-reload")
+    headers["Cache-Control"] = "private, max-age=0" if @$(".initiate-request").hasClass("will-force-reload")
+    headers["Force-Reload"] = true if @$(".initiate-request").hasClass("will-force-proxy-reload")
 
     @model.fetch({headers})
 
   render_response: () ->
-    @$(".response").html(JST["templates/response"](@model.toJSON()))
+    @$(".header-visualizer").html(JST["templates/response"](@model.toJSON()))
 
   animate_request: () =>
     @$el.toggleClass("is-loading", !@model.get("status"))
@@ -32,5 +32,5 @@ class App.Views.Request extends Backbone.View
 
   force_reload_on_alt_key: (evt) =>
     will_force = evt.altKey and evt.target.tagName not in ["TEXTAREA", "INPUT"]
-    @$(".request").toggleClass("will-force-reload", will_force)
-    @$(".request").toggleClass("will-force-proxy-reload", will_force and evt.shiftKey)
+    @$(".initiate-request").toggleClass("will-force-reload", will_force)
+    @$(".initiate-request").toggleClass("will-force-proxy-reload", will_force and evt.shiftKey)

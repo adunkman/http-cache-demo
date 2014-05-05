@@ -10,7 +10,7 @@ html(lang="en-US")
   body
     .error-messages: p.messages
 
-    .request
+    .initiate-request
       .container: button(type="button"): span Request
       .flag Will Invalidate Browser <span class="skip-cache">&amp; Proxy</span> Cache<span class="skip-cache">s</span>
 
@@ -19,8 +19,8 @@ html(lang="en-US")
       .container: .cache: span Proxy Cache
       .container: button(type="button").server: span Server
 
-    .response
-      // see client-side template for header table
+    .header-visualizer
+      // see client-side templates
 
     .header-form: .modal: .elements
       textarea(name="headers", placeholder="Response headers")

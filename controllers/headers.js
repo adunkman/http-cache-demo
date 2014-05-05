@@ -56,11 +56,17 @@ var make_request_through_proxy = function (req, res) {
       for (var i = 0, length = response.headers.length; i < length; i++) {
         var parts = response.headers[i].split(":");
         var name = parts.shift();
+        var lowercase_name = name.toLowerCase()
         var value = parts.join(":");
+
+        if (lowercase_name == "content-type" || lowercase_name == "content-length") {
+          continue;
+        }
 
         res.setHeader(name, value);
       }
-      res.send(response.status, response.body);
+
+      res.send(response.status, req.headers);
     }
   });
 };
