@@ -6,7 +6,7 @@ var server = http.createServer(app);
 app.set("io", require("socket.io").listen(server, { "log level": 1 }));
 app.set("view engine", "jade");
 app.disable("x-powered-by");
-app.disable("etag")
+app.disable("etag");
 
 app.use(require("morgan")("dev"));
 app.use(require("connect-assets")({

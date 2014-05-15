@@ -1,0 +1,25 @@
+{{#if status}}
+  <div class="response">
+    <h1>{{status}}</h1>
+    <table>
+      {{#each response_headers}}
+        <tr class="{{key}}">
+          <th>{{key}}:</th>
+          <td>{{value}}</td>
+        </tr>
+      {{/each}}
+    </table>
+  </div>
+
+  <div class="request">
+    <h1>Request Headers</h1>
+    <table>
+      {{#each request_headers}}
+        <tr class="{{key}}">
+          <th>{{key}}:</th>
+          <td>{{value}}</td>
+        </tr>
+      {{/each}}
+    </table>
+  </div>
+{{/if}}

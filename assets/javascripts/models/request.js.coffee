@@ -4,9 +4,13 @@ class App.Models.Request extends Backbone.Model
   initialize: () ->
     App.socket.on("cache_response", @response_detected("cache_response"))
     App.socket.on("server_response", @response_detected("server_response"))
+    App.socket.on("not_modified_response", @store_request_headers)
 
   response_detected: (from) -> () =>
     @set(from, true)
+
+  store_request_headers: (headers) =>
+    @set("request", headers)
 
   fetch: (options = {}) ->
     @clear()
@@ -14,11 +18,14 @@ class App.Models.Request extends Backbone.Model
     super
 
   parse: (response, options) ->
-    status: "#{options.xhr.status} #{options.xhr.statusText}"
-    headers: @parse_headers(options.xhr.getAllResponseHeaders().trim().split("\r\n"))
+    status:
+      if @get("request") then "304 Not Modified"
+      else "#{options.xhr.status} #{options.xhr.statusText}"
+    response_headers: options.xhr.getAllResponseHeaders()
+    request_headers: @get("request") or response
 
   parse_headers: (headers) ->
-    headers = for header in headers
+    headers = for header in headers.trim().split("\r\n")
       [key, value] = header.split(": ")
 
       key: @to_title_case(key)

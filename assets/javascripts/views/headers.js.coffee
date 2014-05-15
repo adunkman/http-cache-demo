@@ -1,4 +1,6 @@
-class App.Views.Headers extends Backbone.View
+#= require ./header_parsing
+
+class App.Views.Headers extends App.Views.HeaderParsing
   events:
     "click .pipeline .server": "show_header_form"
     "click .header-form button": "save_headers"
@@ -24,4 +26,10 @@ class App.Views.Headers extends Backbone.View
     @close()
 
   render: () ->
-    @$(".header-form textarea").val(@model.get("headers")?.join("\n"))
+    headers = @model.get("headers")
+
+    if headers.length
+      parsed_headers = @parse_headers(headers.join("\r\n"))
+      headers = ("#{header.key}: #{header.value}" for header in parsed_headers)
+
+    @$(".header-form textarea").val(headers.join("\r\n"))

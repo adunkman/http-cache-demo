@@ -1,5 +1,5 @@
 .header-visualizer
-  margin-left: 16.665%
+  clearfix()
   position: relative
 
   &:before
@@ -8,7 +8,7 @@
     cursor: default
     display: block
     height: 0
-    left: 0
+    left: 16.665%
     margin-left: -2px
     position: absolute
     top: -70px
@@ -27,11 +27,23 @@
       height: 60px
       transition: height 0.2s linear 1.6s
 
-  .headers
-    margin-left: -80px
+  .response
+    padding-left: 16.665%
+
+    h1, table
+      margin-left: -80px
+
+    h1
+      text-align: center
+      white-space: nowrap
+      width: 160px
+
+  .response, .request
+    float: left
     opacity: 0
     transform: translateY(-10px)
     transition: opacity 0.15s linear, transform 0s linear 0.15s
+    width: 50%
 
     [data-responded="client"] &
       opacity: 1
@@ -48,22 +60,23 @@
       transform: translateY(0)
       transition: opacity 0.5s linear 1.8s, transform 0.5s ease-out 1.8s
 
-  h1
-    text-align: center
-    white-space: nowrap
-    width: 160px
+    .Connection, .Content-Length, .Content-Type
+      display: none
+
+    .Age, .Via, .X-Cache
+      color: #963bba
+
+      th:before
+        content: "• "
+
+  .request
+    .Accept, .Accept-Encoding, .Accept-Language, .Connection, .Force-Reload,
+    .Referer, .User-Agent, .X-Requested-With
+      display: none
 
   th
     text-align: right
+    white-space: nowrap
 
   td
     padding-left: 10px
-
-  .Connection, .Content-Length, .Content-Type
-    display: none
-
-  .Via, .X-Cache
-    color: #963bba
-
-    th:before
-      content: "• "

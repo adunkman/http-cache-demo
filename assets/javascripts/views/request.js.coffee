@@ -1,4 +1,4 @@
-class App.Views.Request extends Backbone.View
+class App.Views.Request extends App.Views.HeaderParsing
   events:
     "click .initiate-request button": "request"
     "keyup": "force_reload_on_alt_key"
@@ -18,7 +18,12 @@ class App.Views.Request extends Backbone.View
     @model.fetch({headers})
 
   render_response: () ->
-    @$(".header-visualizer").html(JST["templates/response"](@model.toJSON()))
+    @$(".header-visualizer").html(JST["templates/header-visualizer"](@render_response_params()))
+
+  render_response_params: () ->
+    status: @model.get("status")
+    request_headers: @parse_headers(@model.get("request_headers"))
+    response_headers: @parse_headers(@model.get("response_headers"))
 
   animate_request: () =>
     @$el.toggleClass("is-loading", !@model.get("status"))
