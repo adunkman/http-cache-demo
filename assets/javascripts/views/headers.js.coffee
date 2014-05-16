@@ -1,5 +1,3 @@
-#= require ./header_parsing
-
 class App.Views.Headers extends App.Views.HeaderParsing
   events:
     "click .pipeline .server": "show_header_form"
