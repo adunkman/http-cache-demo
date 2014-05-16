@@ -22,18 +22,24 @@ class App.Views.Request extends App.Views.HeaderParsing
 
   render_response_params: () ->
     status: @model.get("status")
-    request_headers: @parse_headers(@model.get("request_headers"))
+    request_headers: @parsed_request_headers()
     response_headers: @parse_headers(@model.get("response_headers"))
+
+  parsed_request_headers: () ->
+    headers = @parse_headers(@model.get("request_headers"))
+    headers = _.reject(headers, (h) -> h.key is "Cache-Control") if @who_responded() is "client"
+    headers
 
   animate_request: () =>
     @$el.toggleClass("is-loading", !@model.get("status"))
     @$el.toggleClass("has-response", !!@model.get("status"))
-    @$el.attr("data-responded",
-      if !@model.get("status") then ""
-      else if @model.get("server_response") then "server"
-      else if @model.get("cache_response") then "cache"
-      else "client"
-    )
+    @$el.attr("data-responded", @who_responded())
+
+  who_responded: () ->
+    if !@model.get("status") then ""
+    else if @model.get("server_response") then "server"
+    else if @model.get("cache_response") then "cache"
+    else "client"
 
   force_reload_on_alt_key: (evt) =>
     will_force = evt.altKey and evt.target.tagName not in ["TEXTAREA", "INPUT"]
