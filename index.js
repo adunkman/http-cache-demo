@@ -18,6 +18,6 @@ require("./controllers/static")(app);
 require("./controllers/headers")(app);
 require("./controllers/cache")(app);
 
-server.listen(process.env.PORT || 3000, function () {
+server.listen(process.env.PORT || 3000, '127.0.0.1', function () {
   console.log("listening on", this.address());
 });
