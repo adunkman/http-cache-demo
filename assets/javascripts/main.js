@@ -2,7 +2,7 @@
 //= require vendor/underscore
 //= require vendor/backbone
 //= require handlebars/dist/handlebars.runtime
-//= require socket.io/node_modules/socket.io-client/dist/socket.io
+//= require socket.io-client/dist/socket.io
 
 //= require_self
 
